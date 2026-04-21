@@ -1,0 +1,26 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Booking #<%= @booking.id %></h1>
+  <%= render "shared/booking_status_badge", booking: @booking %>
+</div>
+
+<div class="card space-y-3 max-w-2xl">
+  <div><strong>Service:</strong> <%= @booking.service.name %></div>
+  <div><strong>Customer:</strong> <%= @booking.customer.full_name %> (<%= @booking.customer.email %>)</div>
+  <div><strong>When:</strong> <%= @booking.start_time.strftime("%A, %b %d · %l:%M %p") %> (<%= @booking.duration_minutes %> min)</div>
+  <div><strong>Price:</strong> <%= @booking.price.format %></div>
+  <div><strong>Payment:</strong> <%= @booking.payment_status.humanize %></div>
+  <% if @booking.notes.present? %>
+    <div><strong>Notes:</strong> <%= @booking.notes %></div>
+  <% end %>
+</div>
+
+<div class="mt-6 flex flex-wrap gap-2">
+  <% if @booking.pending? %>
+    <%= button_to "Accept", accept_provider_booking_path(@booking), method: :patch, class: "btn-primary" %>
+    <%= button_to "Reject", reject_provider_booking_path(@booking), method: :patch, class: "btn-secondary", data: { turbo_confirm: "Reject?" } %>
+  <% end %>
+  <% if @booking.confirmed? %>
+    <%= button_to "Mark completed", mark_completed_provider_booking_path(@booking), method: :patch, class: "btn-primary" %>
+    <%= button_to "Mark no-show", mark_no_show_provider_booking_path(@booking), method: :patch, class: "btn-secondary" %>
+  <% end %>
+</div>

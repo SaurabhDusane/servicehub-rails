@@ -1,0 +1,3 @@
+<h2>How was it?</h2>
+<p>Thanks for booking with <strong><%= @booking.provider_profile.business_name %></strong>. Would you take a moment to leave a review?</p>
+<a class="button" href="<%= new_customer_booking_review_url(@booking, host: ENV.fetch('MAILER_HOST', 'localhost:3000')) %>">Leave a review</a>

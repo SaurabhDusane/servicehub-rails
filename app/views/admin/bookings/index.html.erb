@@ -1,0 +1,22 @@
+<h1 class="text-2xl font-bold mb-6">Bookings</h1>
+<div class="card p-0 overflow-hidden">
+  <table class="min-w-full text-sm divide-y divide-gray-200">
+    <thead class="bg-gray-50 text-xs uppercase text-gray-500 text-left">
+      <tr><th class="px-4 py-3">ID</th><th class="px-4 py-3">Provider</th><th class="px-4 py-3">Customer</th><th class="px-4 py-3">Service</th><th class="px-4 py-3">When</th><th class="px-4 py-3">Status</th><th></th></tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @bookings.each do |b| %>
+        <tr>
+          <td class="px-4 py-3">#<%= b.id %></td>
+          <td class="px-4 py-3"><%= b.provider_profile.business_name %></td>
+          <td class="px-4 py-3"><%= b.customer.email %></td>
+          <td class="px-4 py-3"><%= b.service.name %></td>
+          <td class="px-4 py-3"><%= b.start_time.strftime("%b %d · %l:%M %p") %></td>
+          <td class="px-4 py-3"><%= render "shared/booking_status_badge", booking: b %></td>
+          <td class="px-4 py-3 text-right"><%= link_to "View", admin_booking_path(b), class: "text-indigo-600 hover:underline" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="mt-6"><%= paginate @bookings %></div>

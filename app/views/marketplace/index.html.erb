@@ -1,0 +1,54 @@
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+  <div class="flex flex-col lg:flex-row gap-8">
+    <aside class="lg:w-72 shrink-0">
+      <div class="card sticky top-24">
+        <h2 class="font-semibold text-gray-900 mb-4">Filters</h2>
+        <%= form_with url: marketplace_path, method: :get, local: true, class: "space-y-4" do |f| %>
+          <div>
+            <label class="label">Search</label>
+            <%= f.text_field :q, value: params[:q], placeholder: "e.g. haircut", class: "input" %>
+          </div>
+          <div>
+            <label class="label">Category</label>
+            <%= f.select :category, options_for_select([["Any", ""]] + @categories.map { |c| [c.humanize, c] }, params[:category]), {}, class: "input" %>
+          </div>
+          <div>
+            <label class="label">Location</label>
+            <%= f.text_field :location, value: params[:location], placeholder: "City or neighborhood", class: "input" %>
+          </div>
+          <div>
+            <label class="label">Minimum rating</label>
+            <%= f.select :min_rating, options_for_select([["Any", ""], ["4.5+", 4.5], ["4.0+", 4.0], ["3.5+", 3.5]], params[:min_rating]), {}, class: "input" %>
+          </div>
+          <div>
+            <label class="label">Max price ($)</label>
+            <%= f.number_field :max_price, value: params[:max_price], step: 5, class: "input" %>
+          </div>
+          <div>
+            <label class="label">Sort by</label>
+            <%= f.select :sort, options_for_select([["Recommended", ""], ["Highest rated", "rating"], ["Most reviewed", "reviews"], ["Newest", "newest"]], params[:sort]), {}, class: "input" %>
+          </div>
+          <%= f.submit "Apply filters", class: "btn-primary w-full" %>
+        <% end %>
+      </div>
+    </aside>
+
+    <div class="flex-1">
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Browse providers</h1>
+        <div class="text-sm text-gray-500"><%= pluralize(@providers.total_count, "result") %></div>
+      </div>
+
+      <% if @providers.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <% @providers.each do |p| %>
+            <%= render "shared/provider_card", provider: p %>
+          <% end %>
+        </div>
+        <div class="mt-8"><%= paginate @providers %></div>
+      <% else %>
+        <div class="card text-center text-gray-500">No providers matched your filters.</div>
+      <% end %>
+    </div>
+  </div>
+</section>

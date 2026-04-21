@@ -1,0 +1,76 @@
+<h1 class="text-2xl font-bold mb-6">Studio overview</h1>
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+  <div class="card"><div class="text-sm text-gray-500">Upcoming</div><div class="text-3xl font-bold"><%= @upcoming.size %></div></div>
+  <div class="card"><div class="text-sm text-gray-500">Pending requests</div><div class="text-3xl font-bold"><%= @pending.size %></div></div>
+  <div class="card"><div class="text-sm text-gray-500">Completed</div><div class="text-3xl font-bold"><%= @completed_count %></div></div>
+  <div class="card">
+    <div class="text-sm text-gray-500">Gross revenue</div>
+    <div class="text-3xl font-bold"><%= Money.new(@revenue_cents).format %></div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <section class="card">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold">Pending requests</h2>
+      <%= link_to "View all", provider_bookings_path, class: "text-indigo-600 text-sm hover:underline" %>
+    </div>
+    <% if @pending.any? %>
+      <ul class="divide-y divide-gray-100">
+        <% @pending.each do |b| %>
+          <li class="py-3 flex items-center justify-between gap-4">
+            <div class="min-w-0">
+              <div class="font-medium truncate"><%= b.service.name %> · <%= b.customer.full_name %></div>
+              <div class="text-sm text-gray-500"><%= b.start_time.strftime("%b %d · %l:%M %p") %></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <%= button_to "Accept", accept_provider_booking_path(b), method: :patch, class: "btn-primary text-sm" %>
+              <%= button_to "Reject", reject_provider_booking_path(b), method: :patch, class: "btn-secondary text-sm", data: { turbo_confirm: "Reject?" } %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-sm text-gray-500">No pending requests.</p>
+    <% end %>
+  </section>
+
+  <section class="card">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-semibold">Upcoming</h2>
+      <div class="flex items-center gap-1"><%= render "shared/star_rating", rating: @average_rating %><span class="text-sm text-gray-500">(<%= current_profile.total_reviews %>)</span></div>
+    </div>
+    <% if @upcoming.any? %>
+      <ul class="divide-y divide-gray-100">
+        <% @upcoming.each do |b| %>
+          <li class="py-3 flex items-center justify-between">
+            <div>
+              <div class="font-medium"><%= b.service.name %></div>
+              <div class="text-sm text-gray-500"><%= b.customer.full_name %> · <%= b.start_time.strftime("%b %d · %l:%M %p") %></div>
+            </div>
+            <%= render "shared/booking_status_badge", booking: b %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-sm text-gray-500">Nothing upcoming.</p>
+    <% end %>
+  </section>
+
+  <section class="card lg:col-span-2">
+    <h2 class="font-semibold mb-4">Recent reviews</h2>
+    <% if @recent_reviews.any? %>
+      <ul class="space-y-3">
+        <% @recent_reviews.each do |r| %>
+          <li class="border-b border-gray-100 pb-3 last:border-0">
+            <div class="flex items-center gap-2"><%= render "shared/star_rating", rating: r.rating %><span class="font-medium"><%= r.customer.full_name %></span></div>
+            <p class="text-sm text-gray-700 mt-1"><%= r.body %></p>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-sm text-gray-500">No reviews yet.</p>
+    <% end %>
+  </section>
+</div>

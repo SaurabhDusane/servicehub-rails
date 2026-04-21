@@ -1,0 +1,25 @@
+<aside class="lg:sticky lg:top-24 lg:self-start">
+  <nav class="space-y-1">
+    <%= link_to admin_root_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/dashboard'}" do %>
+      <span>📊</span> Overview
+    <% end %>
+    <%= link_to admin_users_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/users'}" do %>
+      <span>👥</span> Users
+    <% end %>
+    <%= link_to admin_providers_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/providers'}" do %>
+      <span>🏢</span> Providers
+    <% end %>
+    <%= link_to admin_bookings_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/bookings'}" do %>
+      <span>📅</span> Bookings
+    <% end %>
+    <%= link_to admin_reviews_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/reviews'}" do %>
+      <span>⭐</span> Reviews
+    <% end %>
+    <%= link_to admin_reports_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/reports'}" do %>
+      <span>🚩</span> Reports
+    <% end %>
+    <%= link_to admin_audit_logs_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'admin/audit_logs'}" do %>
+      <span>📜</span> Audit log
+    <% end %>
+  </nav>
+</aside>

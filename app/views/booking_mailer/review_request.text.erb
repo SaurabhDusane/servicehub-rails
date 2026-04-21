@@ -1,0 +1,2 @@
+How was your experience with <%= @booking.provider_profile.business_name %>?
+Leave a review: <%= new_customer_booking_review_url(@booking, host: ENV.fetch('MAILER_HOST', 'localhost:3000')) %>

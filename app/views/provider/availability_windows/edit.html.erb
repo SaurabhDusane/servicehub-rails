@@ -1,0 +1,12 @@
+<h1 class="text-2xl font-bold mb-6">Edit availability window</h1>
+<%= form_with model: @window, url: provider_availability_window_path(@window), method: :patch, local: true, class: "card space-y-3 max-w-sm" do |f| %>
+  <div>
+    <label class="label">Day</label>
+    <%= f.select :day_of_week, AvailabilityWindow::DAY_NAMES.each_with_index.to_a, {}, class: "input" %>
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <div><label class="label">Start</label><%= f.time_field :start_time, class: "input" %></div>
+    <div><label class="label">End</label><%= f.time_field :end_time, class: "input" %></div>
+  </div>
+  <%= f.submit "Update", class: "btn-primary" %>
+<% end %>

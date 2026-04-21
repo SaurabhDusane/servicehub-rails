@@ -1,0 +1,14 @@
+<h1 class="text-2xl font-bold mb-6">Reviews</h1>
+<% if @reviews.any? %>
+  <ul class="space-y-3">
+    <% @reviews.each do |r| %>
+      <li class="card">
+        <div class="flex items-center gap-2"><%= render "shared/star_rating", rating: r.rating %><span class="font-medium"><%= r.customer.full_name %></span><% if r.hidden? %><span class="badge-red">Hidden</span><% end %></div>
+        <p class="text-gray-700 mt-2"><%= r.body %></p>
+      </li>
+    <% end %>
+  </ul>
+  <div class="mt-6"><%= paginate @reviews %></div>
+<% else %>
+  <div class="card text-center text-gray-500">No reviews yet.</div>
+<% end %>

@@ -1,0 +1,26 @@
+<%= link_to provider_path(provider), class: "card hover:shadow-md transition block" do %>
+  <div class="flex items-start gap-4">
+    <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xl shrink-0">
+      <%= provider.business_name.first.upcase %>
+    </div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <h3 class="font-semibold text-gray-900 truncate"><%= provider.business_name %></h3>
+      </div>
+      <div class="text-sm text-gray-500 flex items-center gap-2 mt-0.5">
+        <span class="badge-indigo"><%= provider.category.humanize %></span>
+        <% if provider.location.present? %>
+          <span>· <%= provider.location %></span>
+        <% end %>
+      </div>
+      <p class="text-sm text-gray-600 mt-2 line-clamp-2"><%= provider.bio.to_s.truncate(120) %></p>
+      <div class="flex items-center justify-between mt-3 text-sm">
+        <div class="flex items-center gap-1">
+          <%= render "shared/star_rating", rating: provider.average_rating %>
+          <span class="text-gray-500">(<%= provider.total_reviews %>)</span>
+        </div>
+        <div class="font-semibold text-gray-900">from <%= provider.starting_price.format %></div>
+      </div>
+    </div>
+  </div>
+<% end %>

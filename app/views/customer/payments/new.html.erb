@@ -1,0 +1,44 @@
+<h1 class="text-2xl font-bold mb-6">Payment</h1>
+<div class="card max-w-xl space-y-4">
+  <div>
+    <div class="text-sm text-gray-500">Booking</div>
+    <div class="font-semibold"><%= @booking.service.name %> — <%= @booking.provider_profile.business_name %></div>
+  </div>
+  <div class="flex items-center justify-between border-t pt-4">
+    <div>
+      <div class="text-sm text-gray-500">Amount due</div>
+      <div class="text-2xl font-bold"><%= Money.new(@payment.amount_cents, @payment.currency).format %></div>
+    </div>
+    <span class="badge-indigo"><%= @payment.kind.humanize %></span>
+  </div>
+
+  <% if @payment.metadata["simulated"] %>
+    <div class="bg-yellow-50 text-yellow-800 text-sm rounded-lg p-3">
+      Stripe is not configured — payment was auto-simulated as successful. Add <code>STRIPE_SECRET_KEY</code> to use real payments.
+    </div>
+    <%= button_to "Return to booking", customer_booking_path(@booking), method: :get, class: "btn-primary w-full" %>
+  <% else %>
+    <form id="payment-form" data-client-secret="<%= @client_secret %>" data-publishable-key="<%= stripe_publishable_key %>" data-booking-url="<%= customer_booking_path(@booking) %>">
+      <div id="payment-element" class="p-4 border rounded-lg"></div>
+      <button id="submit" class="btn-primary w-full mt-4" type="submit">Pay now</button>
+      <div id="payment-message" class="mt-2 text-sm text-red-600"></div>
+    </form>
+    <script nonce="<%= content_security_policy_nonce %>">
+      (async () => {
+        const form = document.getElementById("payment-form");
+        const stripe = Stripe(form.dataset.publishableKey);
+        const elements = stripe.elements({ clientSecret: form.dataset.clientSecret });
+        const paymentElement = elements.create("payment");
+        paymentElement.mount("#payment-element");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: { return_url: window.location.origin + form.dataset.bookingUrl }
+          });
+          if (error) document.getElementById("payment-message").textContent = error.message;
+        });
+      })();
+    </script>
+  <% end %>
+</div>

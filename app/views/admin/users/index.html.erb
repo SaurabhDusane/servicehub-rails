@@ -1,0 +1,21 @@
+<h1 class="text-2xl font-bold mb-6">Users</h1>
+<div class="card p-0 overflow-hidden">
+  <table class="min-w-full text-sm divide-y divide-gray-200">
+    <thead class="bg-gray-50 text-xs uppercase text-gray-500 text-left">
+      <tr><th class="px-4 py-3">Email</th><th class="px-4 py-3">Name</th><th class="px-4 py-3">Role</th><th class="px-4 py-3">Active</th><th class="px-4 py-3">Joined</th><th></th></tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @users.each do |u| %>
+        <tr>
+          <td class="px-4 py-3"><%= u.email %></td>
+          <td class="px-4 py-3"><%= u.full_name %></td>
+          <td class="px-4 py-3"><span class="badge-indigo"><%= u.role %></span></td>
+          <td class="px-4 py-3"><%= u.active? ? "✅" : "❌" %></td>
+          <td class="px-4 py-3"><%= u.created_at.to_date %></td>
+          <td class="px-4 py-3 text-right"><%= link_to "View", admin_user_path(u), class: "text-indigo-600 hover:underline" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="mt-6"><%= paginate @users %></div>

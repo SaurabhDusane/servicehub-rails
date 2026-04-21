@@ -1,0 +1,24 @@
+<%= form_with model: [:provider, service], local: true, html: { multipart: true }, class: "card space-y-4 max-w-2xl" do |f| %>
+  <% if service.errors.any? %>
+    <div class="flash-alert"><%= service.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div><label class="label">Name</label><%= f.text_field :name, class: "input" %></div>
+  <div>
+    <label class="label">Category</label>
+    <%= f.select :category, ProviderProfile::CATEGORIES.map { |c| [c.humanize, c] }, {}, class: "input" %>
+  </div>
+  <div><label class="label">Description</label><%= f.text_area :description, rows: 4, class: "input" %></div>
+  <div class="grid grid-cols-2 gap-4">
+    <div><label class="label">Duration (min)</label><%= f.number_field :duration_minutes, class: "input" %></div>
+    <div><label class="label">Buffer (min)</label><%= f.number_field :buffer_minutes, class: "input" %></div>
+    <div><label class="label">Price (cents)</label><%= f.number_field :price_cents, class: "input" %></div>
+    <div><label class="label">Deposit (cents)</label><%= f.number_field :deposit_cents, class: "input" %></div>
+  </div>
+  <div class="flex items-center gap-4">
+    <label class="flex items-center gap-2"><%= f.check_box :instant_booking %> Instant booking</label>
+    <label class="flex items-center gap-2"><%= f.check_box :requires_approval %> Requires approval</label>
+    <label class="flex items-center gap-2"><%= f.check_box :active %> Active</label>
+  </div>
+  <div><label class="label">Images</label><%= f.file_field :images, multiple: true, accept: "image/*", class: "input" %></div>
+  <%= f.submit class: "btn-primary" %>
+<% end %>

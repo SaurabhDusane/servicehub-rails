@@ -1,0 +1,73 @@
+<% content_for :title, "Booking ##{@booking.id}" %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Booking #<%= @booking.id %></h1>
+  <%= render "shared/booking_status_badge", booking: @booking %>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="card lg:col-span-2 space-y-3">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-sm text-gray-500">Service</div>
+        <div class="font-semibold"><%= @booking.service.name %></div>
+      </div>
+      <div>
+        <div class="text-sm text-gray-500">Provider</div>
+        <%= link_to @booking.provider_profile.business_name, provider_path(@booking.provider_profile), class: "font-semibold text-indigo-600 hover:underline" %>
+      </div>
+    </div>
+    <hr class="border-gray-100">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <div class="text-sm text-gray-500">Starts</div>
+        <div><%= @booking.start_time.in_time_zone(current_user.tz).strftime("%A, %b %d · %l:%M %p") %></div>
+      </div>
+      <div>
+        <div class="text-sm text-gray-500">Duration</div>
+        <div><%= @booking.duration_minutes %> minutes</div>
+      </div>
+      <div>
+        <div class="text-sm text-gray-500">Price</div>
+        <div><%= @booking.price.format %></div>
+      </div>
+      <div>
+        <div class="text-sm text-gray-500">Payment</div>
+        <div><%= @booking.payment_status.humanize %></div>
+      </div>
+    </div>
+    <% if @booking.notes.present? %>
+      <hr class="border-gray-100">
+      <div>
+        <div class="text-sm text-gray-500">Notes to provider</div>
+        <div class="text-gray-700"><%= @booking.notes %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <aside class="space-y-4">
+    <% if @booking.payment_status_unpaid? && !@booking.cancelled? && !@booking.rejected? %>
+      <%= link_to "Complete payment", new_customer_booking_payment_path(@booking), class: "btn-primary w-full" %>
+    <% end %>
+
+    <% if @booking.reviewable? %>
+      <%= link_to "Leave a review", new_customer_booking_review_path(@booking), class: "btn-primary w-full" %>
+    <% end %>
+
+    <% if @booking.cancellable_by_customer? %>
+      <%= button_to "Cancel booking", cancel_customer_booking_path(@booking), method: :patch,
+                    data: { turbo_confirm: "Cancel this booking?" },
+                    class: "btn-danger w-full" %>
+    <% end %>
+
+    <% if @booking.payments.any? %>
+      <div class="card">
+        <h3 class="font-semibold mb-2">Payment history</h3>
+        <ul class="text-sm space-y-2">
+          <% @booking.payments.order(:created_at).each do |p| %>
+            <li class="flex justify-between"><span><%= p.kind.humanize %></span><span><%= p.amount.format %> · <%= p.status.humanize %></span></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </aside>
+</div>

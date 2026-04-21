@@ -1,0 +1,37 @@
+<% content_for :title, "My bookings" %>
+<h1 class="text-2xl font-bold mb-6">My bookings</h1>
+
+<% if @bookings.any? %>
+  <div class="card p-0 overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50 text-xs uppercase text-gray-500 text-left">
+        <tr>
+          <th class="px-4 py-3">Service</th>
+          <th class="px-4 py-3">Provider</th>
+          <th class="px-4 py-3">When</th>
+          <th class="px-4 py-3">Price</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 text-sm">
+        <% @bookings.each do |b| %>
+          <tr>
+            <td class="px-4 py-3 font-medium"><%= b.service.name %></td>
+            <td class="px-4 py-3"><%= b.provider_profile.business_name %></td>
+            <td class="px-4 py-3"><%= b.start_time.in_time_zone(current_user.tz).strftime("%b %d, %Y · %l:%M %p") %></td>
+            <td class="px-4 py-3"><%= b.price.format %></td>
+            <td class="px-4 py-3"><%= render "shared/booking_status_badge", booking: b %></td>
+            <td class="px-4 py-3 text-right"><%= link_to "View", customer_booking_path(b), class: "text-indigo-600 hover:underline" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-6"><%= paginate @bookings %></div>
+<% else %>
+  <div class="card text-center">
+    <p class="text-gray-500">No bookings yet.</p>
+    <%= link_to "Browse pros", marketplace_path, class: "btn-primary mt-4 inline-block" %>
+  </div>
+<% end %>

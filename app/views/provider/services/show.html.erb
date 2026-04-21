@@ -1,0 +1,10 @@
+<h1 class="text-2xl font-bold mb-4"><%= @service.name %></h1>
+<div class="card space-y-2">
+  <div><strong>Duration:</strong> <%= @service.duration_minutes %> min</div>
+  <div><strong>Price:</strong> <%= @service.price.format %></div>
+  <div><strong>Deposit:</strong> <%= @service.deposit.format %></div>
+  <div><strong>Instant booking:</strong> <%= @service.instant_booking? ? "Yes" : "No" %></div>
+  <div><strong>Active:</strong> <%= @service.active? ? "Yes" : "No" %></div>
+  <p class="text-gray-700 pt-3 border-t"><%= @service.description %></p>
+</div>
+<div class="mt-4"><%= link_to "Edit", edit_provider_service_path(@service), class: "btn-secondary" %></div>

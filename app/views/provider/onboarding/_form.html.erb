@@ -1,0 +1,38 @@
+<%= form_with model: profile, url: url, method: method, local: true, html: { multipart: true }, class: "card space-y-4 max-w-2xl" do |f| %>
+  <% if profile.errors.any? %>
+    <div class="flash-alert"><%= profile.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div>
+    <label class="label">Business name</label>
+    <%= f.text_field :business_name, class: "input" %>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="label">Category</label>
+      <%= f.select :category, ProviderProfile::CATEGORIES.map { |c| [c.humanize, c] }, {}, class: "input" %>
+    </div>
+    <div>
+      <label class="label">Location</label>
+      <%= f.text_field :location, class: "input" %>
+    </div>
+  </div>
+  <div>
+    <label class="label">Bio</label>
+    <%= f.text_area :bio, rows: 4, class: "input" %>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="label">Cancellation cutoff (hours)</label>
+      <%= f.number_field :cancellation_cutoff_hours, class: "input" %>
+    </div>
+    <div>
+      <label class="label">Cancellation policy</label>
+      <%= f.text_field :cancellation_policy, class: "input" %>
+    </div>
+  </div>
+  <div>
+    <label class="label">Cover image</label>
+    <%= f.file_field :cover_image, accept: "image/*", class: "input" %>
+  </div>
+  <%= f.submit "Save", class: "btn-primary" %>
+<% end %>

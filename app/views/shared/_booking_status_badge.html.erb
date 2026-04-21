@@ -1,0 +1,10 @@
+<%
+  klass = case booking.status
+  when "pending"    then "badge-yellow"
+  when "confirmed"  then "badge-blue"
+  when "completed"  then "badge-green"
+  when "cancelled", "rejected", "no_show" then "badge-red"
+  else "badge-gray"
+  end
+%>
+<span class="<%= klass %>"><%= t("bookings.statuses.#{booking.status}", default: booking.status.humanize) %></span>

@@ -1,0 +1,25 @@
+<aside class="lg:sticky lg:top-24 lg:self-start">
+  <nav class="space-y-1">
+    <%= link_to provider_root_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/dashboard'}" do %>
+      <span>📊</span> Overview
+    <% end %>
+    <%= link_to provider_bookings_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/bookings'}" do %>
+      <span>📅</span> Bookings
+    <% end %>
+    <%= link_to provider_services_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/services'}" do %>
+      <span>💼</span> Services
+    <% end %>
+    <%= link_to provider_availability_windows_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/availability_windows'}" do %>
+      <span>⏰</span> Availability
+    <% end %>
+    <%= link_to provider_availability_exceptions_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/availability_exceptions'}" do %>
+      <span>🚫</span> Time off
+    <% end %>
+    <%= link_to provider_reviews_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/reviews'}" do %>
+      <span>⭐</span> Reviews
+    <% end %>
+    <%= link_to provider_profile_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'provider/profiles'}" do %>
+      <span>🏷️</span> Public profile
+    <% end %>
+  </nav>
+</aside>

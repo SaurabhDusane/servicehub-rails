@@ -1,0 +1,7 @@
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4">
+  <% flash.each do |key, msg| %>
+    <div class="<%= key.to_s == "alert" ? "flash-alert" : "flash-notice" %>" data-controller="flash" data-flash-dismiss-after-value="5000">
+      <%= msg %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,10 @@
+<h2>Your booking is confirmed 🎉</h2>
+<p>Hi <%= @customer.first_name %>,</p>
+<p>Your booking with <strong><%= @booking.provider_profile.business_name %></strong> is confirmed.</p>
+<ul>
+  <li><strong>Service:</strong> <%= @booking.service.name %></li>
+  <li><strong>When:</strong> <%= @booking.start_time.strftime("%A, %B %d at %l:%M %p") %></li>
+  <li><strong>Price:</strong> <%= @booking.price.format %></li>
+  <li><strong>Status:</strong> <%= @booking.status.humanize %></li>
+</ul>
+<a class="button" href="<%= customer_booking_url(@booking, host: ENV.fetch('MAILER_HOST', 'localhost:3000')) %>">View booking</a>

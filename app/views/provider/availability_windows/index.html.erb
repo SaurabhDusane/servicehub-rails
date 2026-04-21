@@ -1,0 +1,39 @@
+<h1 class="text-2xl font-bold mb-6">Weekly availability</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_22rem] gap-6">
+  <div class="card">
+    <% if @windows.any? %>
+      <ul class="divide-y divide-gray-100">
+        <% @windows.each do |w| %>
+          <li class="py-3 flex items-center justify-between">
+            <div>
+              <div class="font-medium"><%= w.day_name %></div>
+              <div class="text-sm text-gray-500"><%= w.start_time.strftime("%l:%M %p") %> – <%= w.end_time.strftime("%l:%M %p") %></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <%= link_to "Edit", edit_provider_availability_window_path(w), class: "btn-ghost text-sm" %>
+              <%= button_to "Delete", provider_availability_window_path(w), method: :delete, class: "btn-ghost text-sm text-red-600", data: { turbo_confirm: "Delete this window?" } %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 text-sm">No availability defined yet.</p>
+    <% end %>
+  </div>
+
+  <div class="card">
+    <h2 class="font-semibold mb-4">Add window</h2>
+    <%= form_with model: @window, url: provider_availability_windows_path, local: true, class: "space-y-3" do |f| %>
+      <div>
+        <label class="label">Day</label>
+        <%= f.select :day_of_week, AvailabilityWindow::DAY_NAMES.each_with_index.to_a, {}, class: "input" %>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="label">Start</label><%= f.time_field :start_time, class: "input" %></div>
+        <div><label class="label">End</label><%= f.time_field :end_time, class: "input" %></div>
+      </div>
+      <%= f.submit "Add", class: "btn-primary w-full" %>
+    <% end %>
+  </div>
+</div>

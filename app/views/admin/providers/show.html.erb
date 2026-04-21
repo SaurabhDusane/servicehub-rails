@@ -1,0 +1,14 @@
+<h1 class="text-2xl font-bold mb-6"><%= @provider.business_name %></h1>
+<div class="card max-w-xl space-y-3">
+  <div><strong>Owner:</strong> <%= @provider.user.email %></div>
+  <div><strong>Category:</strong> <%= @provider.category.humanize %></div>
+  <div><strong>Status:</strong> <%= @provider.status.humanize %></div>
+  <div><strong>Rating:</strong> <%= number_with_precision(@provider.average_rating, precision: 1) %> (<%= @provider.total_reviews %> reviews)</div>
+  <div><strong>Bio:</strong><p class="text-gray-700 whitespace-pre-line"><%= @provider.bio %></p></div>
+
+  <div class="border-t pt-4 flex items-center gap-2">
+    <% ProviderProfile.statuses.keys.each do |s| %>
+      <%= button_to s.humanize, admin_provider_path(@provider), method: :patch, params: { status: s }, class: "btn-secondary text-sm" %>
+    <% end %>
+  </div>
+</div>

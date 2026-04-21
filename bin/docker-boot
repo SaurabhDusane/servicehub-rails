@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -e
+
+# --- ServiceHub dev boot banner -----------------------------------------
+C_RESET='\033[0m'
+C_BOLD='\033[1m'
+C_INDIGO='\033[38;5;99m'
+C_CYAN='\033[38;5;45m'
+C_GREEN='\033[38;5;78m'
+C_DIM='\033[2m'
+
+printf "\n${C_INDIGO}${C_BOLD}"
+cat <<'BANNER'
+   ____                  _          _   _       _
+  / ___|  ___ _ ____   _(_) ___ ___| | | |_   _| |__
+  \___ \ / _ \ '__\ \ / / |/ __/ _ \ |_| | | | | '_ \
+   ___) |  __/ |   \ V /| | (_|  __/  _  | |_| | |_) |
+  |____/ \___|_|    \_/ |_|\___\___|_| |_|\__,_|_.__/
+BANNER
+printf "${C_RESET}"
+printf "${C_CYAN}  · ${C_BOLD}development stack${C_RESET}${C_CYAN} · rails %s · ruby %s${C_RESET}\n" \
+  "$(bundle exec ruby -e 'require "rails/version"; print Rails::VERSION::STRING' 2>/dev/null || echo '?')" \
+  "$(ruby -e 'print RUBY_VERSION' 2>/dev/null || echo '?')"
+printf "${C_DIM}  web  → http://localhost:3000${C_RESET}\n"
+printf "${C_DIM}  css  → tailwind watcher (hot reload)${C_RESET}\n"
+printf "${C_DIM}  jobs → sidekiq worker${C_RESET}\n\n"
+
+printf "${C_GREEN}▸ preparing database…${C_RESET}\n"
+bin/rails db:prepare
+
+printf "${C_GREEN}▸ starting puma on 0.0.0.0:3000${C_RESET}\n\n"
+exec bin/rails server -b 0.0.0.0 -p 3000

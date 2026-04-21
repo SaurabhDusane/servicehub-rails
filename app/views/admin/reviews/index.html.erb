@@ -1,0 +1,18 @@
+<h1 class="text-2xl font-bold mb-6">Reviews</h1>
+<ul class="space-y-3">
+  <% @reviews.each do |r| %>
+    <li class="card">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex-1">
+          <div class="flex items-center gap-2"><%= render "shared/star_rating", rating: r.rating %><span class="font-medium"><%= r.customer.full_name %></span><span class="text-sm text-gray-500">on <%= r.provider_profile.business_name %></span><% if r.hidden? %><span class="badge-red">Hidden</span><% end %></div>
+          <p class="mt-2 text-gray-700"><%= r.body %></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= button_to (r.hidden? ? "Show" : "Hide"), admin_review_path(r), method: :patch, params: { hidden: !r.hidden }, class: "btn-secondary text-sm" %>
+          <%= button_to "Delete", admin_review_path(r), method: :delete, class: "btn-danger text-sm", data: { turbo_confirm: "Delete review?" } %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>
+<div class="mt-6"><%= paginate @reviews %></div>

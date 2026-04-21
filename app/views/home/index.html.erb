@@ -1,0 +1,62 @@
+<section class="bg-gradient-to-br from-indigo-50 via-white to-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+    <div class="max-w-2xl">
+      <span class="badge-indigo">New · Instant booking for most pros</span>
+      <h1 class="mt-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900">
+        Book trusted local pros in minutes.
+      </h1>
+      <p class="mt-5 text-lg text-gray-600">
+        From haircuts to home cleaning, tutoring to training — compare availability, pricing and reviews, then book securely in a few clicks.
+      </p>
+      <%= form_with url: marketplace_path, method: :get, class: "mt-8 flex flex-col sm:flex-row gap-3 max-w-xl" do |f| %>
+        <%= f.text_field :q, placeholder: "What do you need done?", class: "input flex-1" %>
+        <%= f.submit "Search", class: "btn-primary" %>
+      <% end %>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <% @categories.first(6).each do |c| %>
+          <%= link_to c.humanize, marketplace_path(category: c), class: "badge-gray hover:bg-gray-200" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+  <div class="flex items-end justify-between mb-6">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">Top-rated providers</h2>
+      <p class="text-gray-500">Hand-picked based on ratings and recency.</p>
+    </div>
+    <%= link_to "Browse all →", marketplace_path, class: "text-indigo-600 font-medium hover:underline" %>
+  </div>
+
+  <% if @featured_providers.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <% @featured_providers.each do |p| %>
+        <%= render "shared/provider_card", provider: p %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="card text-center text-gray-500">No providers yet. Seed the database to see examples.</div>
+  <% end %>
+</section>
+
+<section class="bg-white border-y border-gray-200">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 grid gap-8 md:grid-cols-3">
+    <div>
+      <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 grid place-items-center font-bold">1</div>
+      <h3 class="mt-3 font-semibold text-lg">Search & compare</h3>
+      <p class="text-gray-600 mt-1">Find pros nearby, filter by price, rating, and availability.</p>
+    </div>
+    <div>
+      <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 grid place-items-center font-bold">2</div>
+      <h3 class="mt-3 font-semibold text-lg">Book securely</h3>
+      <p class="text-gray-600 mt-1">Pay a deposit or full amount — refunded per provider policy.</p>
+    </div>
+    <div>
+      <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 grid place-items-center font-bold">3</div>
+      <h3 class="mt-3 font-semibold text-lg">Enjoy & review</h3>
+      <p class="text-gray-600 mt-1">Leave feedback to help the community.</p>
+    </div>
+  </div>
+</section>

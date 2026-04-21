@@ -1,0 +1,32 @@
+<h1 class="text-2xl font-bold mb-6">Bookings</h1>
+<% if @bookings.any? %>
+  <div class="card p-0 overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200 text-sm">
+      <thead class="bg-gray-50 text-xs uppercase text-gray-500 text-left">
+        <tr>
+          <th class="px-4 py-3">When</th>
+          <th class="px-4 py-3">Customer</th>
+          <th class="px-4 py-3">Service</th>
+          <th class="px-4 py-3">Price</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @bookings.each do |b| %>
+          <tr>
+            <td class="px-4 py-3 whitespace-nowrap"><%= b.start_time.strftime("%b %d · %l:%M %p") %></td>
+            <td class="px-4 py-3"><%= b.customer.full_name %></td>
+            <td class="px-4 py-3"><%= b.service.name %></td>
+            <td class="px-4 py-3"><%= b.price.format %></td>
+            <td class="px-4 py-3"><%= render "shared/booking_status_badge", booking: b %></td>
+            <td class="px-4 py-3 text-right"><%= link_to "View", provider_booking_path(b), class: "text-indigo-600 hover:underline" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-6"><%= paginate @bookings %></div>
+<% else %>
+  <div class="card text-center text-gray-500">No bookings yet.</div>
+<% end %>

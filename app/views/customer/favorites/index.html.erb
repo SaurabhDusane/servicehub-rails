@@ -1,0 +1,11 @@
+<h1 class="text-2xl font-bold mb-6">Saved providers</h1>
+<% if @providers.any? %>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <% @providers.each do |p| %>
+      <%= render "shared/provider_card", provider: p %>
+    <% end %>
+  </div>
+  <div class="mt-6"><%= paginate @providers %></div>
+<% else %>
+  <div class="card text-center text-gray-500">You haven't saved any providers yet.</div>
+<% end %>

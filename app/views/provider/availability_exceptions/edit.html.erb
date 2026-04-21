@@ -1,0 +1,14 @@
+<h1 class="text-2xl font-bold mb-6">Edit exception</h1>
+<%= form_with model: @exception, url: provider_availability_exception_path(@exception), method: :patch, local: true, class: "card space-y-3 max-w-sm" do |f| %>
+  <div><label class="label">Date</label><%= f.date_field :date, class: "input" %></div>
+  <div>
+    <label class="label">Type</label>
+    <%= f.select :exception_type, AvailabilityException.exception_types.keys.map { |k| [k.humanize, k] }, {}, class: "input" %>
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <div><label class="label">Start</label><%= f.time_field :start_time, class: "input" %></div>
+    <div><label class="label">End</label><%= f.time_field :end_time, class: "input" %></div>
+  </div>
+  <div><label class="label">Reason</label><%= f.text_field :reason, class: "input" %></div>
+  <%= f.submit "Update", class: "btn-primary" %>
+<% end %>

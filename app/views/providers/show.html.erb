@@ -1,0 +1,108 @@
+<% content_for :title, @provider.business_name %>
+
+<section class="bg-white border-b border-gray-200">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row md:items-center gap-6">
+    <div class="w-20 h-20 rounded-full bg-indigo-100 text-indigo-700 grid place-items-center text-3xl font-bold">
+      <%= @provider.business_name.first.upcase %>
+    </div>
+    <div class="flex-1">
+      <div class="flex items-center gap-3 flex-wrap">
+        <h1 class="text-3xl font-bold text-gray-900"><%= @provider.business_name %></h1>
+        <span class="badge-indigo"><%= @provider.category.humanize %></span>
+        <% if @provider.status_active? %>
+          <span class="badge-green">Active</span>
+        <% else %>
+          <span class="badge-yellow"><%= @provider.status.humanize %></span>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+        <%= render "shared/star_rating", rating: @provider.average_rating %>
+        <span><%= number_with_precision(@provider.average_rating, precision: 1) %> · <%= @provider.total_reviews %> reviews</span>
+        <% if @provider.location.present? %>
+          <span>· 📍 <%= @provider.location %></span>
+        <% end %>
+        <span>· Responds <%= @provider.response_time.to_s.humanize.downcase %></span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <% if user_signed_in? && current_user.customer? %>
+        <% fav = current_user.favorites.find_by(provider_profile_id: @provider.id) %>
+        <% if fav %>
+          <%= button_to "♥ Saved", provider_favorite_path(@provider), method: :delete, class: "btn-secondary" %>
+        <% else %>
+          <%= button_to "♡ Save", provider_favorite_path(@provider), method: :post, class: "btn-secondary" %>
+        <% end %>
+      <% end %>
+      <%= link_to "Report", new_report_path(target_type: "ProviderProfile", target_id: @provider.id), class: "btn-ghost text-sm" if user_signed_in? %>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2 space-y-8">
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-2">About</h2>
+      <p class="text-gray-700 whitespace-pre-line"><%= @provider.bio %></p>
+    </div>
+
+    <div class="card">
+      <h2 class="text-xl font-semibold mb-4">Services</h2>
+      <% if @services.any? %>
+        <div class="divide-y divide-gray-100">
+          <% @services.each do |service| %>
+            <%= link_to provider_service_path(@provider, service), class: "flex items-center justify-between py-4 hover:bg-gray-50 -mx-4 px-4 rounded" do %>
+              <div>
+                <div class="font-semibold text-gray-900"><%= service.name %></div>
+                <div class="text-sm text-gray-500"><%= service.duration_minutes %> min · <%= service.category.humanize %></div>
+              </div>
+              <div class="text-right">
+                <div class="font-semibold text-gray-900"><%= service.price.format %></div>
+                <% if service.instant_booking? %>
+                  <span class="badge-green text-xs">Instant</span>
+                <% else %>
+                  <span class="badge-yellow text-xs">Approval</span>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500">No services listed yet.</p>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Reviews</h2>
+        <%= link_to "See all", provider_reviews_path(@provider), class: "text-indigo-600 text-sm hover:underline" %>
+      </div>
+      <% if @reviews.any? %>
+        <ul class="space-y-4">
+          <% @reviews.each do |r| %>
+            <li class="border-b border-gray-100 pb-4 last:border-0">
+              <div class="flex items-center gap-2">
+                <%= render "shared/star_rating", rating: r.rating %>
+                <span class="font-medium text-gray-800"><%= r.customer.full_name %></span>
+                <span class="text-gray-400 text-sm">· <%= r.created_at.to_date.to_fs(:long) %></span>
+              </div>
+              <p class="mt-2 text-gray-700"><%= r.body %></p>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500">No reviews yet — be the first!</p>
+      <% end %>
+    </div>
+  </div>
+
+  <aside class="space-y-4">
+    <div class="card">
+      <h3 class="font-semibold mb-2">Cancellation policy</h3>
+      <p class="text-sm text-gray-700"><%= @provider.cancellation_policy.presence || "Cancel up to #{@provider.cancellation_cutoff_hours}h before for a full refund." %></p>
+    </div>
+    <div class="card">
+      <h3 class="font-semibold mb-2">Service area</h3>
+      <p class="text-sm text-gray-700"><%= @provider.location.presence || "—" %> · within <%= @provider.service_radius_km %>km</p>
+    </div>
+  </aside>
+</section>

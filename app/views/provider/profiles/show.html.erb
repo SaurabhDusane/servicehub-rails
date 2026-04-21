@@ -1,0 +1,17 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Public profile</h1>
+  <div class="flex items-center gap-2">
+    <%= link_to "View public page", provider_path(@profile), class: "btn-secondary", target: "_blank", rel: "noopener" %>
+    <%= link_to "Edit", edit_provider_profile_path, class: "btn-primary" %>
+  </div>
+</div>
+
+<div class="card space-y-3">
+  <div><strong>Business name:</strong> <%= @profile.business_name %></div>
+  <div><strong>Category:</strong> <%= @profile.category.humanize %></div>
+  <div><strong>Location:</strong> <%= @profile.location %></div>
+  <div><strong>Response time:</strong> <%= @profile.response_time&.humanize %></div>
+  <div><strong>Cancellation policy:</strong> <%= @profile.cancellation_policy %></div>
+  <div><strong>Bio:</strong><div class="text-gray-700 whitespace-pre-line"><%= @profile.bio %></div></div>
+  <div><strong>Status:</strong> <%= @profile.status.humanize %></div>
+</div>

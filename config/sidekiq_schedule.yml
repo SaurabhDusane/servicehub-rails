@@ -1,0 +1,14 @@
+send_booking_reminders:
+  cron: "*/15 * * * *"
+  class: "BookingReminderSchedulerJob"
+  description: "Enqueue reminder emails for bookings starting in the next 24h"
+
+send_review_requests:
+  cron: "0 * * * *"
+  class: "ReviewRequestSchedulerJob"
+  description: "Enqueue review request emails for recently completed bookings"
+
+expire_stale_pending_bookings:
+  cron: "*/10 * * * *"
+  class: "ExpirePendingBookingsJob"
+  description: "Auto-reject pending bookings that have been unresponded for too long"

@@ -1,0 +1,7 @@
+Your booking is confirmed.
+
+Service: <%= @booking.service.name %>
+Provider: <%= @booking.provider_profile.business_name %>
+When: <%= @booking.start_time.strftime("%A, %B %d at %l:%M %p") %>
+Price: <%= @booking.price.format %>
+Status: <%= @booking.status.humanize %>

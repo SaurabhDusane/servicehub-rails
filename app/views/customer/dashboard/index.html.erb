@@ -1,0 +1,54 @@
+<% content_for :title, "Dashboard" %>
+<h1 class="text-2xl font-bold mb-6">Welcome back, <%= current_user.first_name %></h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <div class="card">
+    <div class="text-sm text-gray-500">Upcoming</div>
+    <div class="text-3xl font-bold"><%= @upcoming.size %></div>
+  </div>
+  <div class="card">
+    <div class="text-sm text-gray-500">Past bookings</div>
+    <div class="text-3xl font-bold"><%= current_user.bookings_as_customer.past.count %></div>
+  </div>
+  <div class="card">
+    <div class="text-sm text-gray-500">Saved providers</div>
+    <div class="text-3xl font-bold"><%= current_user.favorites.count %></div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <section class="card">
+    <h2 class="font-semibold mb-4">Upcoming bookings</h2>
+    <% if @upcoming.any? %>
+      <ul class="divide-y divide-gray-100">
+        <% @upcoming.each do |b| %>
+          <li class="py-3 flex items-center justify-between">
+            <div>
+              <%= link_to b.service.name, customer_booking_path(b), class: "font-medium hover:underline" %>
+              <div class="text-sm text-gray-500"><%= b.provider_profile.business_name %> · <%= b.start_time.in_time_zone(current_user.tz).strftime("%b %d · %l:%M %p") %></div>
+            </div>
+            <%= render "shared/booking_status_badge", booking: b %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 text-sm">No upcoming bookings. <%= link_to "Find a pro", marketplace_path, class: "text-indigo-600 hover:underline" %>.</p>
+    <% end %>
+  </section>
+
+  <section class="card">
+    <h2 class="font-semibold mb-4">Recent activity</h2>
+    <% if @notifications.any? %>
+      <ul class="divide-y divide-gray-100">
+        <% @notifications.each do |n| %>
+          <li class="py-3">
+            <div class="text-sm font-medium"><%= n.title %></div>
+            <div class="text-xs text-gray-500"><%= time_ago_in_words(n.created_at) %> ago</div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 text-sm">Nothing yet.</p>
+    <% end %>
+  </section>
+</div>

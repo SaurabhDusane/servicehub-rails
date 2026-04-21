@@ -1,0 +1,30 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Services</h1>
+  <%= link_to "+ New service", new_provider_service_path, class: "btn-primary" %>
+</div>
+
+<% if @services.any? %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% @services.each do |s| %>
+      <div class="card">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="font-semibold text-lg"><%= s.name %></div>
+            <div class="text-sm text-gray-500"><%= s.duration_minutes %> min · <%= s.category.humanize %></div>
+          </div>
+          <div class="text-right">
+            <div class="font-semibold"><%= s.price.format %></div>
+            <% if s.active? %><span class="badge-green">Active</span><% else %><span class="badge-gray">Inactive</span><% end %>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 mt-2 line-clamp-2"><%= s.description %></p>
+        <div class="mt-3 flex items-center gap-2">
+          <%= link_to "Edit", edit_provider_service_path(s), class: "btn-secondary text-sm" %>
+          <%= button_to "Deactivate", provider_service_path(s), method: :delete, class: "btn-ghost text-sm", data: { turbo_confirm: "Deactivate?" } if s.active? %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="card text-center text-gray-500">No services yet. Create one to start taking bookings.</div>
+<% end %>

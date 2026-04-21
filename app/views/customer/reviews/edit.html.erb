@@ -1,0 +1,12 @@
+<h1 class="text-2xl font-bold mb-6">Edit review</h1>
+<%= form_with model: @review, url: customer_booking_review_path(@booking), method: :patch, local: true, class: "card max-w-xl space-y-4" do |f| %>
+  <div>
+    <label class="label">Rating</label>
+    <%= f.select :rating, (1..5).map { |i| ["#{i} ★", i] }, { selected: @review.rating }, class: "input" %>
+  </div>
+  <div>
+    <label class="label">Your review</label>
+    <%= f.text_area :body, rows: 5, class: "input" %>
+  </div>
+  <%= f.submit "Update review", class: "btn-primary" %>
+<% end %>

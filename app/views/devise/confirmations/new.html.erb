@@ -1,0 +1,9 @@
+<section class="mx-auto max-w-md px-4 py-16">
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-6">Resend confirmation instructions</h1>
+    <%= form_with model: resource, url: confirmation_path(resource_name), local: true, class: "space-y-4" do |f| %>
+      <div><%= f.label :email, class: "label" %><%= f.email_field :email, class: "input", required: true %></div>
+      <%= f.submit "Resend", class: "btn-primary w-full" %>
+    <% end %>
+  </div>
+</section>

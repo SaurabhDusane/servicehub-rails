@@ -1,0 +1,23 @@
+<aside class="lg:sticky lg:top-24 lg:self-start">
+  <nav class="space-y-1">
+    <%= link_to customer_root_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'customer/dashboard'}" do %>
+      <span>🏠</span> Dashboard
+    <% end %>
+    <%= link_to customer_bookings_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'customer/bookings'}" do %>
+      <span>📅</span> Bookings
+    <% end %>
+    <%= link_to customer_favorites_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'customer/favorites'}" do %>
+      <span>❤️</span> Favorites
+    <% end %>
+    <%= link_to customer_notifications_path, class: "sidebar-link #{'sidebar-active' if controller_path == 'customer/notifications'}" do %>
+      <span>🔔</span> Notifications
+      <% count = current_user.notifications.unread.count %>
+      <% if count.positive? %>
+        <span class="ml-auto badge-indigo"><%= count %></span>
+      <% end %>
+    <% end %>
+    <%= link_to edit_user_registration_path, class: "sidebar-link" do %>
+      <span>⚙️</span> Settings
+    <% end %>
+  </nav>
+</aside>

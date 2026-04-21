@@ -1,0 +1,2 @@
+class AvailabilityExceptionPolicy < AvailabilityWindowPolicy
+end

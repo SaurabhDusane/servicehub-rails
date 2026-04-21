@@ -1,0 +1,11 @@
+<h1 class="text-2xl font-bold mb-6">Booking #<%= @booking.id %></h1>
+<div class="card max-w-2xl space-y-2">
+  <div><strong>Status:</strong> <%= render "shared/booking_status_badge", booking: @booking %></div>
+  <div><strong>Customer:</strong> <%= @booking.customer.email %></div>
+  <div><strong>Provider:</strong> <%= @booking.provider_profile.business_name %></div>
+  <div><strong>Service:</strong> <%= @booking.service.name %></div>
+  <div><strong>When:</strong> <%= @booking.start_time %></div>
+  <div><strong>Price:</strong> <%= @booking.price.format %></div>
+  <div><strong>Payment:</strong> <%= @booking.payment_status.humanize %></div>
+  <% if @booking.cancellation_reason.present? %><div><strong>Cancellation:</strong> <%= @booking.cancellation_reason %></div><% end %>
+</div>

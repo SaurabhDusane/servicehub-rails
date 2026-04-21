@@ -1,0 +1,19 @@
+<h1 class="text-2xl font-bold mb-6">Review <%= @booking.provider_profile.business_name %></h1>
+<%= form_with model: @review, url: customer_booking_review_path(@booking), method: :post, local: true, class: "card max-w-xl space-y-4" do |f| %>
+  <% if @review.errors.any? %>
+    <div class="flash-alert"><%= @review.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <div>
+    <label class="label">Rating</label>
+    <%= f.select :rating, (1..5).map { |i| ["#{i} ★", i] }, {}, class: "input" %>
+  </div>
+  <div>
+    <label class="label">Your review</label>
+    <%= f.text_area :body, rows: 5, class: "input", placeholder: "How was your experience?" %>
+  </div>
+  <div>
+    <label class="label">Photos (optional)</label>
+    <%= f.file_field :photos, multiple: true, accept: "image/*", class: "input" %>
+  </div>
+  <%= f.submit "Submit review", class: "btn-primary" %>
+<% end %>

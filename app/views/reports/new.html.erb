@@ -1,0 +1,19 @@
+<section class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 py-10">
+  <h1 class="text-2xl font-bold mb-6">Submit a report</h1>
+  <%= form_with model: @report, class: "card space-y-4" do |f| %>
+    <% if @report.errors.any? %>
+      <div class="flash-alert"><%= @report.errors.full_messages.to_sentence %></div>
+    <% end %>
+    <%= f.hidden_field :target_type %>
+    <%= f.hidden_field :target_id %>
+    <div>
+      <%= f.label :reason, class: "label" %>
+      <%= f.select :reason, Report::REASONS.map { |r| [r.humanize, r] }, {}, class: "input" %>
+    </div>
+    <div>
+      <%= f.label :notes, class: "label" %>
+      <%= f.text_area :notes, rows: 4, class: "input", placeholder: "What happened?" %>
+    </div>
+    <%= f.submit "Submit report", class: "btn-primary" %>
+  <% end %>
+</section>

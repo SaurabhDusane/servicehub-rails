@@ -1,0 +1,12 @@
+<% rating ||= 0 %>
+<span class="inline-flex items-center text-amber-500" aria-label="<%= rating %> out of 5 stars">
+  <% 5.times do |i| %>
+    <% if i < rating.to_f.floor %>
+      <span>★</span>
+    <% elsif i < rating.to_f %>
+      <span>☆</span>
+    <% else %>
+      <span class="text-gray-300">★</span>
+    <% end %>
+  <% end %>
+</span>

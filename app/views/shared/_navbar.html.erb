@@ -1,0 +1,35 @@
+<header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-8">
+      <%= link_to root_path, class: "flex items-center gap-2 font-extrabold text-xl text-indigo-600" do %>
+        <span class="inline-block w-7 h-7 rounded-lg bg-indigo-600 text-white text-center leading-7">S</span>
+        ServiceHub
+      <% end %>
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
+        <%= link_to "Browse", marketplace_path, class: "hover:text-indigo-600" %>
+        <% if user_signed_in? && current_user.customer? %>
+          <%= link_to "My bookings", customer_bookings_path, class: "hover:text-indigo-600" %>
+        <% elsif user_signed_in? && current_user.provider? %>
+          <%= link_to "My schedule", provider_bookings_path, class: "hover:text-indigo-600" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to "Admin", admin_root_path, class: "btn-ghost text-sm" %>
+        <% elsif current_user.provider? %>
+          <%= link_to "Studio", provider_root_path, class: "btn-ghost text-sm" %>
+        <% else %>
+          <%= link_to "Dashboard", customer_root_path, class: "btn-ghost text-sm" %>
+        <% end %>
+        <span class="text-sm text-gray-600 hidden sm:inline"><%= current_user.full_name %></span>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn-secondary text-sm", data: { turbo: false } %>
+      <% else %>
+        <%= link_to "Log in", new_user_session_path, class: "btn-ghost text-sm" %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn-primary text-sm" %>
+      <% end %>
+    </div>
+  </nav>
+</header>

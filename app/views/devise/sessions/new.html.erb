@@ -1,0 +1,23 @@
+<section class="mx-auto max-w-md px-4 py-16">
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-6">Log in</h1>
+    <%= form_with model: resource, url: session_path(resource_name), local: true, class: "space-y-4" do |f| %>
+      <div>
+        <%= f.label :email, class: "label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+      </div>
+      <div>
+        <%= f.label :password, class: "label" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+      </div>
+      <% if devise_mapping.rememberable? %>
+        <label class="flex items-center gap-2"><%= f.check_box :remember_me %> Remember me</label>
+      <% end %>
+      <%= f.submit "Log in", class: "btn-primary w-full" %>
+    <% end %>
+    <div class="mt-4 text-sm text-gray-500 space-y-1">
+      <%= link_to "Forgot your password?", new_password_path(resource_name), class: "hover:underline" %> ·
+      <%= link_to "Sign up", new_registration_path(resource_name), class: "hover:underline" %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+<h1 class="text-2xl font-bold mb-6"><%= @user.full_name %></h1>
+<div class="card max-w-xl space-y-4">
+  <div><strong>Email:</strong> <%= @user.email %></div>
+  <div><strong>Joined:</strong> <%= @user.created_at.to_fs(:long) %></div>
+
+  <%= form_with model: @user, url: admin_user_path(@user), method: :patch, local: true, class: "space-y-3" do |f| %>
+    <div><label class="label">Role</label><%= f.select :role, User.roles.keys.map { |r| [r.humanize, r] }, { selected: @user.role }, class: "input" %></div>
+    <label class="flex items-center gap-2"><%= f.check_box :active %> Active</label>
+    <%= f.submit "Save", class: "btn-primary" %>
+  <% end %>
+
+  <%= button_to "Deactivate", admin_user_path(@user), method: :delete, class: "btn-danger", data: { turbo_confirm: "Deactivate user?" } if @user.active? && @user != current_user %>
+</div>

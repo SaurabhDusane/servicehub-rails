@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+C_RESET='\033[0m'
+C_BOLD='\033[1m'
+C_PINK='\033[38;5;213m'
+C_DIM='\033[2m'
+
+printf "\n${C_PINK}${C_BOLD}✿ tailwind watcher${C_RESET}${C_PINK} — rebuilding styles on save${C_RESET}\n"
+printf "${C_DIM}  source → app/assets/stylesheets/application.tailwind.css${C_RESET}\n"
+printf "${C_DIM}  output → app/assets/builds/tailwind.css${C_RESET}\n\n"
+
+# initial build guarantees the file exists before the healthcheck passes
+bundle exec rake tailwindcss:build
+
+exec bundle exec rake tailwindcss:watch

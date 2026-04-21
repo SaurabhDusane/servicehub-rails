@@ -1,0 +1,3 @@
+<h2>Payment received</h2>
+<p>We received your <%= @payment.kind.humanize.downcase %> payment of <strong><%= @payment.amount.format %></strong> for booking #<%= @booking.id %>.</p>
+<p>Thank you!</p>

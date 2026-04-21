@@ -1,0 +1,17 @@
+en:
+  hello: "Hello world"
+  app:
+    name: "ServiceHub"
+    tagline: "Book trusted local pros in minutes."
+  bookings:
+    statuses:
+      pending: "Pending"
+      confirmed: "Confirmed"
+      completed: "Completed"
+      cancelled: "Cancelled"
+      rejected: "Rejected"
+      no_show: "No-show"
+  errors:
+    messages:
+      overlap: "overlaps with an existing booking"
+      outside_availability: "is outside of the provider's availability"

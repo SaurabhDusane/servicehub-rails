@@ -1,0 +1,68 @@
+x-app: &app
+  build: .
+  environment: &app_env
+    DATABASE_URL: postgres://postgres:postgres@db:5432/servicehub_development
+    REDIS_URL: redis://redis:6379/0
+    RAILS_ENV: development
+    RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:-}
+    STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_dummy}
+    STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY:-pk_test_dummy}
+    MAILER_HOST: localhost:3000
+  volumes:
+    - .:/rails
+    - bundle:/usr/local/bundle
+  tty: true
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: servicehub_development
+    ports: ["5432:5432"]
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  css:
+    <<: *app
+    command: ["bash", "bin/docker-css"]
+    healthcheck:
+      # tailwind.css must exist AND be non-empty before dependants start
+      test: ["CMD-SHELL", "test -s app/assets/builds/tailwind.css"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+      start_period: 5s
+
+  web:
+    <<: *app
+    command: ["bash", "bin/docker-boot"]
+    ports: ["3000:3000"]
+    depends_on:
+      db:    { condition: service_healthy }
+      redis: { condition: service_healthy }
+      css:   { condition: service_healthy }
+
+  worker:
+    <<: *app
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+    depends_on:
+      db:    { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+volumes:
+  pg_data:
+  bundle:
